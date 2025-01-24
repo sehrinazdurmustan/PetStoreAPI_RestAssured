@@ -1,18 +1,24 @@
 import io.qameta.allure.Description;
-import io.qameta.allure.junit4.AllureJunit4;
-import io.restassured.RestAssured;
+
+import io.qameta.allure.restassured.AllureRestAssured;
+
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
+import static io.restassured.RestAssured.given;
 
 public class PetStoreTests extends  BaseTest {
 
-    @Rule
-    public AllureJunit4 rule = new AllureJunit4();
+
+
+    @BeforeAll
+    public static void setUp() {
+        // Allure Rest Assured filter'ını ekleyin
+        given().filter(new AllureRestAssured());
+    }
+
 
     @Test
     @Description("Create pet")
@@ -35,7 +41,7 @@ public class PetStoreTests extends  BaseTest {
                 "    ],\n" +
                 "    \"status\": \"available\"\n" +
                 "}";
-        RestAssured.given()
+        given()
                 .body(bodyPayload)
                 .contentType(ContentType.JSON)
                 .when()
@@ -49,7 +55,7 @@ public class PetStoreTests extends  BaseTest {
     @Test
     @Description("Get pet from ID")
     public void GetPetID(){
-        RestAssured.given()
+        given()
                 .contentType(ContentType.JSON)
                 .when()
                 .get("pet/1234567880")
@@ -79,7 +85,7 @@ public class PetStoreTests extends  BaseTest {
                 "    \"status\": \"available\"\n" +
                 "}";
 
-        RestAssured.given()
+        given()
                 .contentType(ContentType.JSON)
                 .when()
                 .body(bodyPayload)
@@ -91,7 +97,7 @@ public class PetStoreTests extends  BaseTest {
     @Test
     @Description("Delete Pet")
     public void DeletePet(){
-        RestAssured.given()
+        given()
                 .contentType(ContentType.JSON)
                 .when()
                 .delete("pet/1234567890")
@@ -102,7 +108,7 @@ public class PetStoreTests extends  BaseTest {
     @Test
     @Description("Get Pet from status")
     public void GetPetStatus(){
-        RestAssured.given()
+        given()
                 .contentType(ContentType.JSON)
                 .when()
                 .get("pet/findByStatus?status=available")
@@ -113,7 +119,7 @@ public class PetStoreTests extends  BaseTest {
     @Test
     @Description("Update petID")
     public void UpdatePetID(){
-        RestAssured.given()
+        given()
                 .contentType(ContentType.JSON)
                 .when()
                 .post("pet/1234567890")

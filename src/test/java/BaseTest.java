@@ -1,11 +1,12 @@
 import io.restassured.RestAssured;
-import org.junit.BeforeClass;
+
+import org.junit.jupiter.api.BeforeEach;
 
 public class BaseTest {
 
 
-        @BeforeClass
-        public static void setup() {
+        @BeforeEach
+        public void setup() {
             RestAssured.baseURI = "https://petstore.swagger.io";
             RestAssured.basePath = "/v2";
         }
